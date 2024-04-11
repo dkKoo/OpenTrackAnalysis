@@ -14,6 +14,8 @@ def analyze_and_save(file_path, save_directory, stats_raw_combined, stats_filter
     stats_filtered = df[['filteredYaw', 'filteredPitch', 'filteredRoll']].agg(['mean', 'std', 'min', 'max'])
 
     file_name = os.path.splitext(os.path.basename(file_path))[0]
+    plot_directory = os.path.join(save_directory, f'{file_name}_plot')
+    os.makedirs(plot_directory, exist_ok=True)
 
     for col in ['Yaw', 'Pitch', 'Roll']:
         for stat in ['mean', 'std', 'min', 'max']:
@@ -29,7 +31,7 @@ def analyze_and_save(file_path, save_directory, stats_raw_combined, stats_filter
     ax[1].plot(df['scaled_time'], df['filteredPitch'], label='Filtered Pitch', color='green')
     ax[1].plot(df['scaled_time'], df['filteredRoll'], label='Filtered Roll', color='red')
     ax[1].legend()
-    plt.savefig(f'{save_directory}/{file_name}_2d_plot.png')
+    plt.savefig(f'{plot_directory}/{file_name}_2d_plot.png')
     plt.close(fig)
 
     fig = plt.figure(figsize=(8, 6))
@@ -39,7 +41,7 @@ def analyze_and_save(file_path, save_directory, stats_raw_combined, stats_filter
     ax.set_ylabel('Pitch')
     ax.set_zlabel('Roll')
     ax.legend()
-    plt.savefig(f'{save_directory}/{file_name}_raw_3d_plot.png')
+    plt.savefig(f'{plot_directory}/{file_name}_raw_3d_plot.png')
     plt.close(fig)
 
     fig = plt.figure(figsize=(8, 6))
@@ -49,7 +51,7 @@ def analyze_and_save(file_path, save_directory, stats_raw_combined, stats_filter
     ax.set_ylabel('Pitch')
     ax.set_zlabel('Roll')
     ax.legend()
-    plt.savefig(f'{save_directory}/{file_name}_filtered_3d_plot.png')
+    plt.savefig(f'{plot_directory}/{file_name}_filtered_3d_plot.png')
     plt.close(fig)
 
 def main():
